@@ -1,0 +1,18 @@
+{
+  "name": "cms-finder",
+  "version": "0.0.1",
+  "description": "Recherche d'outils par référence CMS",
+  "license": "proprietary",
+  "author": {
+    "name": "Aurélien Bounhiol",
+    "email": "aurelien@ab-cd.fr",
+    "url": "https://www.ab-cd.fr"
+  },
+  "main": "./dist/main/main.js",
+  "scripts": {
+    "rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+    "postinstall": "npm run rebuild && npm run link-modules",
+    "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
+  },
+  "dependencies": {}
+}
