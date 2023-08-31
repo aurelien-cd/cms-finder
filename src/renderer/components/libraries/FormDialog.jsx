@@ -14,7 +14,7 @@ import { useState } from 'react';
 import AddLibraryForm from "./AddLibraryForm";
 
 
-const FormDialog = (props) => {
+const FormDialog = ({ addLibrary }) => {
 
     const [open, setOpen] = useState(false);
 
@@ -31,7 +31,7 @@ const FormDialog = (props) => {
                     <DialogHeader>
                         <DialogTitle>Ajouter une librairie</DialogTitle>
                     </DialogHeader>
-                    <AddLibraryForm setOpen={setOpen} />
+                    <AddLibraryForm setOpen={setOpen} addLibrary={addLibrary} />
                 </DialogContent>
             </Dialog>
         </>

@@ -3,58 +3,72 @@ import { Button } from '../components/ui/button';
 import { Icon } from '@iconify/react';
 import SearchForm from '../components/searchTools/SearchForm';
 import SearchResults from '../components/searchTools/SearchResults';
-import db from '../db/db';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ProgressBar from '../components/searchTools/ProgressBar';
+import { useToast } from "../components/ui/use-toast"
 
 const fs = window.require('fs');
 const path = window.require('path');
+const ipcRenderer = window.require('electron').ipcRenderer;
 
 const Search = () => {
     const [progress, setProgress] = useState(0);
     const [searching, setSearching] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
+    const [libraries, setLibraries] = useState([]);
     const showForm = !searching && searchResults.length === 0;
-
-    const libraries = useLiveQuery(
-        async () => {
-            const libraries = await db.libraries.toArray();
-            return libraries;
-        },
-        []
-    );
 
     const reset = () => {
         setSearchResults([]);
         setProgress(0);
     }
 
+    const { toast } = useToast()
+
+    useEffect(() => {
+        const getLibraries = async () => {
+            const result = await ipcRenderer.invoke('getStoreValue', 'libraries');
+            setLibraries(result || []);
+        }
+
+        getLibraries();
+    }, [])
+
     function handleSubmit(data) {
         setSearching(true);
         const searchTerms = data.searchTerms.split('\n').filter((term) => term !== '');
-        const library = libraries.find((lib) => lib.id === parseInt(data.library));
+        const library = libraries[data.library];
 
-        const files = fs.readdirSync(library.path);
+        try {
+            const files = fs.readdirSync(library.path);
 
-        setSearchResults([]);
+            setSearchResults([]);
 
-        searchTerms.forEach((term, index) => {
-            const searchResult = files.find((file) => file.includes(term + '.dxf'));
-            if (searchResult) {
-                fs.copyFileSync(library.path + path.sep + searchResult, data.outputFolder + path.sep + searchResult);
-                setSearchResults((searchResults) => [...searchResults, {
-                    term: term,
-                    found: true,
-                }]);
-            } else {
-                setSearchResults((searchResults) => [...searchResults, {
-                    term: term,
-                    found: false,
-                }]);
-            }
-            setProgress((index + 1) / searchTerms.length * 100);
-        })
+            searchTerms.forEach((term, index) => {
+                const searchResult = files.find((file) => file.includes(term + '.dxf'));
+                if (searchResult) {
+                    fs.copyFileSync(library.path + path.sep + searchResult, data.outputFolder + path.sep + searchResult);
+                    setSearchResults((searchResults) => [...searchResults, {
+                        term: term,
+                        found: true,
+                    }]);
+                } else {
+                    setSearchResults((searchResults) => [...searchResults, {
+                        term: term,
+                        found: false,
+                    }]);
+                }
+                setProgress((index + 1) / searchTerms.length * 100);
+            })
+
+        } catch (error) {
+            toast({
+                variant: "destructive",
+                title: 'Une erreur est survenue',
+                description: "Dossier de la bibliothèque introuvable.",
+            });
+        }
 
         setSearching(false);
     }

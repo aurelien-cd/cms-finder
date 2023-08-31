@@ -4,16 +4,21 @@ import Home from './pages/home';
 import Settings from './pages/settings';
 import Libraries from './pages/libraries';
 import Search from './pages/search';
+import { Toaster } from './components/ui/toaster';
 
 export default function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/settings/libraries" element={<Libraries />} />
-        <Route path="/search" element={<Search />} />
-      </Routes>
-    </Router>
+    <>
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/settings/libraries" element={<Libraries />} />
+                <Route path="/search" element={<Search />} />
+            </Routes>
+        </Router>
+        <Toaster />
+    </>
+
   );
 }

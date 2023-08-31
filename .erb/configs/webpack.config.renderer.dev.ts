@@ -63,7 +63,7 @@ const configuration: webpack.Configuration = {
   module: {
     rules: [
       {
-        test: /\.s?(c|a)ss$/,
+        test: /\.s?css$/,
         use: [
           'style-loader',
           {
@@ -74,41 +74,36 @@ const configuration: webpack.Configuration = {
               importLoaders: 1,
             },
           },
+          'sass-loader',
         ],
         include: /\.module\.s?(c|a)ss$/,
       },
       {
-        test: /\.css$/,
-        include: [webpackPaths.srcRendererPath],
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
+        test: /\.s?css$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [require('tailwindcss'), require('autoprefixer')],
+              },
+            },
+          },
+        ],
+        exclude: /\.module\.s?(c|a)ss$/,
       },
-      // Fonts
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: 'asset/resource',
-      },
-      // Images
-      {
-        test: /\.(png|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
-      },
-      // SVG
       {
         test: /\.svg$/,
         use: [
           {
-            loader: '@svgr/webpack',
+            loader: 'svg-url-loader',
             options: {
-              prettier: false,
-              svgo: false,
-              svgoConfig: {
-                plugins: [{ removeViewBox: false }],
-              },
-              titleProp: true,
-              ref: true,
+              limit: 10000,
             },
           },
-          'file-loader',
         ],
       },
     ],

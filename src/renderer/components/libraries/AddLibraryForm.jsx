@@ -16,7 +16,8 @@ import { Button } from '../ui/button';
 import { useToast } from "../ui/use-toast"
 import { Icon } from '@iconify/react';
 
-import db from '../../db/db';
+import storage from '../../lib/storage';
+import { useEffect } from "react";
 
 const FormSchema = yup.object({
     name: yup.string().required('Veuillez saisir un nom de bibliothèque.'),
@@ -25,16 +26,20 @@ const FormSchema = yup.object({
 
 const {dialog} = window.require('@electron/remote');
 
-const AddLibraryForm = ({setOpen}) => {
+const AddLibraryForm = ({setOpen, addLibrary}) => {
 
     const form = useForm({
         resolver: yupResolver(FormSchema),
+        defaultValues: {
+          name: '',
+          path: ''
+        }
     })
 
     const { toast } = useToast()
 
     const onSubmit = async (data) => {
-        await db.libraries.add(data);
+        addLibrary(data);
         setOpen(false);
         toast({title: 'La bibliothèque a été ajoutée avec succès.'});
     }

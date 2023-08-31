@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 
+
 const FormSchema = yup.object({
     library: yup.string().required("Vous devez sélectionner une librairie."),
     outputFolder: yup.string().required("Veuillez sélectionner un dossier de sortie."),
@@ -38,6 +39,11 @@ const SearchForm = ({libraries, submitHandler}) => {
 
     const form = useForm({
         resolver: yupResolver(FormSchema),
+        defaultValues: {
+          library: '',
+          outputFolder: '',
+          searchTerms: ''
+        }
     })
 
     const searchTermsCount = form.watch('searchTerms')?.split('\n').filter((term) => term !== '').length;
@@ -71,12 +77,12 @@ const SearchForm = ({libraries, submitHandler}) => {
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select a verified email to display" />
+                                            <SelectValue placeholder="Choisissez une librairie" />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        {libraries?.map((lib) => (
-                                            <SelectItem value={lib.id.toString()} key={lib.id.toString()}>{lib.name}</SelectItem>
+                                        {libraries?.map((lib, key) => (
+                                            <SelectItem value={key.toString()} key={key}>{lib.name}</SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
