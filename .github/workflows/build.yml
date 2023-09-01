@@ -4,11 +4,12 @@ on: push
 
 jobs:
   release:
+    permissions: write-all
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: [macos-latest, windows-latest] # ubuntu-latest,
+        os: [windows-latest] # ubuntu-latest,macos-latest,
 
     steps:
       - name: Checkout git repo

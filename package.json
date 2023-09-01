@@ -7,7 +7,7 @@
     "electron",
     "react"
   ],
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "Proprietary",
   "author": {
     "name": "Aurélien Bounhiol",
@@ -245,8 +245,8 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "aurelien-cd",
+      "repo": "cms-finder"
     }
   },
   "devEngines": {

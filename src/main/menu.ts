@@ -6,7 +6,7 @@ import {
   MenuItemConstructorOptions,
 } from 'electron';
 
-const checkForUpdates = require('./updater');
+//const checkForUpdates = require('./updater');
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -137,12 +137,12 @@ export default class MenuBuilder {
     const subMenuHelp: MenuItemConstructorOptions = {
       label: 'Aide',
       submenu: [
-        {
-          label: 'Vérifier les mises à jour',
-          click() {
-            checkForUpdates();
-          },
-        },
+        // {
+        //   label: 'Vérifier les mises à jour',
+        //   click() {
+        //     checkForUpdates();
+        //   },
+        // },
       ],
     };
 

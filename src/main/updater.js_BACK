@@ -28,7 +28,7 @@ autoUpdater.on('update-available', () => {
       autoUpdater.downloadUpdate()
     }
     else {
-      updater.enabled = true
+      //updater.enabled = true
       updater = null
     }
   })
@@ -39,7 +39,7 @@ autoUpdater.on('update-not-available', () => {
     title: 'No Updates',
     message: 'Current version is up-to-date.'
   })
-  updater.enabled = true
+  //updater.enabled = true
   updater = null
 })
 
