@@ -19,7 +19,7 @@ const SearchResults = ({results, outputFolder}) => {
         shell.openPath(outputFolder);
     }
 
-    const jsonResults = results.map((result) => {
+    const jsonResults = results.filter((result) => !result.found).map((result) => {
         return {
             'Référence': result.term,
         }
