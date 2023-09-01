@@ -3,7 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { Button } from "../ui/button";
 import { read, utils, writeFile } from 'xlsx';
 
-const SearchResults = ({results}) => {
+const { shell } = window.require('@electron/remote');
+
+const SearchResults = ({results, outputFolder}) => {
 
     const found = results.filter((result) => result.found).length;
     const notFound = results.filter((result) => !result.found).length;
@@ -11,6 +13,10 @@ const SearchResults = ({results}) => {
     const copyToClipboard = () => {
         const text = results.filter((result) => !result.found).map((result) => result.term).join('\n');
         navigator.clipboard.writeText(text);
+    }
+
+    const openOutputFolder = () => {
+        shell.openPath(outputFolder);
     }
 
     const jsonResults = results.map((result) => {
@@ -33,13 +39,21 @@ const SearchResults = ({results}) => {
             </CardHeader>
             <CardContent>
                 <div className="flex items-start justify-around gap-8 mt-4">
-                    <div className="flex items-center gap-2">
-                        <div className="inline-flex p-2 mx-auto bg-gray-100 rounded-full">
-                            <Icon icon="tabler:check" className="w-8 h-8 text-green-500" />
+                    <div>
+                        <div className="flex items-center gap-2">
+                            <div className="inline-flex p-2 mx-auto bg-gray-100 rounded-full">
+                                <Icon icon="tabler:check" className="w-8 h-8 text-green-500" />
+                            </div>
+                            <div>
+                                <p className="text-xl font-bold tracking-tight">{found}</p>
+                                <p className="text-sm text-gray-500">Outil{found > 1 && 's'} trouvé{found > 1 && 's'}</p>
+                            </div>
                         </div>
-                        <div>
-                            <p className="text-xl font-bold tracking-tight">{found}</p>
-                            <p className="text-sm text-gray-500">Outils trouvés</p>
+                        <div className="flex items-center gap-2 mt-4">
+                            <Button variant="outline" size="xs" onClick={openOutputFolder}>
+                                <Icon icon="tabler:folder" className='w-4 h-4 mr-2' />
+                                Ouvrir le dossier
+                            </Button>
                         </div>
                     </div>
                     <div>
@@ -49,7 +63,7 @@ const SearchResults = ({results}) => {
                             </div>
                             <div className="flex-grow">
                                 <p className="text-xl font-bold tracking-tight">{notFound}</p>
-                                <p className="text-sm text-gray-500">Outils non trouvés</p>
+                                <p className="text-sm text-gray-500">Outil{notFound > 1 && 's'} non trouvé{notFound > 1 && 's'}</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-2 mt-4">

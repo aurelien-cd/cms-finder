@@ -17,6 +17,7 @@ const Search = () => {
     const [searching, setSearching] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
     const [libraries, setLibraries] = useState([]);
+    const [outputFolder, setOutputFolder] = useState('');
     const showForm = !searching && searchResults.length === 0;
 
     const reset = () => {
@@ -39,6 +40,7 @@ const Search = () => {
         setSearching(true);
         const searchTerms = data.searchTerms.split('\n').filter((term) => term !== '');
         const library = libraries[data.library];
+        setOutputFolder(data.outputFolder);
 
         try {
             const files = fs.readdirSync(library.path);
@@ -46,7 +48,7 @@ const Search = () => {
             setSearchResults([]);
 
             searchTerms.forEach((term, index) => {
-                const searchResult = files.find((file) => file.includes(term + '.dxf'));
+                const searchResult = files.find((file) => file.toLowerCase().includes(term.toLowerCase() + '.dxf'));
                 if (searchResult) {
                     fs.copyFileSync(library.path + path.sep + searchResult, data.outputFolder + path.sep + searchResult);
                     setSearchResults((searchResults) => [...searchResults, {
@@ -79,7 +81,7 @@ const Search = () => {
                 <h2 className="mb-8 text-3xl font-bold tracking-tight">Recherche d'outils</h2>
                 {showForm && <SearchForm libraries={libraries} submitHandler={handleSubmit} />}
                 {searching && <ProgressBar progress={progress} />}
-                {searchResults.length > 0 && <SearchResults results={searchResults} />}
+                {searchResults.length > 0 && <SearchResults results={searchResults} outputFolder={outputFolder} />}
             </div>
 
             <div className="fixed bottom-0 z-10 flex justify-end w-full gap-4 p-4 bg-white border-t shadow border-slate-200">

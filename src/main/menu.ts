@@ -6,6 +6,8 @@ import {
   MenuItemConstructorOptions,
 } from 'electron';
 
+const checkForUpdates = require('./updater');
+
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
   submenu?: DarwinMenuItemConstructorOptions[] | Menu;
@@ -54,29 +56,12 @@ export default class MenuBuilder {
 
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'Electron',
+      label: 'CMS Finder',
       submenu: [
-        {
-          label: 'About ElectronReact',
-          selector: 'orderFrontStandardAboutPanel:',
-        },
-        { type: 'separator' },
         { label: 'Services', submenu: [] },
         { type: 'separator' },
         {
-          label: 'Hide ElectronReact',
-          accelerator: 'Command+H',
-          selector: 'hide:',
-        },
-        {
-          label: 'Hide Others',
-          accelerator: 'Command+Shift+H',
-          selector: 'hideOtherApplications:',
-        },
-        { label: 'Show All', selector: 'unhideAllApplications:' },
-        { type: 'separator' },
-        {
-          label: 'Quit',
+          label: 'Quitter',
           accelerator: 'Command+Q',
           click: () => {
             app.quit();
@@ -142,42 +127,20 @@ export default class MenuBuilder {
       label: 'Window',
       submenu: [
         {
-          label: 'Minimize',
+          label: 'Réduire',
           accelerator: 'Command+M',
           selector: 'performMiniaturize:',
         },
-        { label: 'Close', accelerator: 'Command+W', selector: 'performClose:' },
-        { type: 'separator' },
-        { label: 'Bring All to Front', selector: 'arrangeInFront:' },
+        { label: 'Fermer', accelerator: 'Command+W', selector: 'performClose:' },
       ],
     };
     const subMenuHelp: MenuItemConstructorOptions = {
-      label: 'Help',
+      label: 'Aide',
       submenu: [
         {
-          label: 'Learn More',
+          label: 'Vérifier les mises à jour',
           click() {
-            shell.openExternal('https://electronjs.org');
-          },
-        },
-        {
-          label: 'Documentation',
-          click() {
-            shell.openExternal(
-              'https://github.com/electron/electron/tree/main/docs#readme'
-            );
-          },
-        },
-        {
-          label: 'Community Discussions',
-          click() {
-            shell.openExternal('https://www.electronjs.org/community');
-          },
-        },
-        {
-          label: 'Search Issues',
-          click() {
-            shell.openExternal('https://github.com/electron/electron/issues');
+            checkForUpdates();
           },
         },
       ],
@@ -194,7 +157,7 @@ export default class MenuBuilder {
       subMenuEdit,
       subMenuView,
       subMenuWindow,
-      // subMenuHelp
+      subMenuHelp
     ];
   }
 
@@ -259,32 +222,12 @@ export default class MenuBuilder {
               ],
       },
       {
-        label: 'Help',
+        label: 'Aide',
         submenu: [
           {
-            label: 'Learn More',
+            label: 'Vérifier les mises à jour',
             click() {
-              shell.openExternal('https://electronjs.org');
-            },
-          },
-          {
-            label: 'Documentation',
-            click() {
-              shell.openExternal(
-                'https://github.com/electron/electron/tree/main/docs#readme'
-              );
-            },
-          },
-          {
-            label: 'Community Discussions',
-            click() {
-              shell.openExternal('https://www.electronjs.org/community');
-            },
-          },
-          {
-            label: 'Search Issues',
-            click() {
-              shell.openExternal('https://github.com/electron/electron/issues');
+              checkForUpdates();
             },
           },
         ],
