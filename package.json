@@ -1,6 +1,6 @@
 {
   "name": "CMS Finder",
-  "version": "0.0.2-beta.4",
+  "version": "0.0.5",
   "private": true,
   "packageManager": "pnpm@8.7.5",
   "description": "Vitesse + Nuxt + Electron starter template",
