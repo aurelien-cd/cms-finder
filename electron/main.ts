@@ -58,7 +58,7 @@ async function bootstrap() {
   });
 
   printerWindow = new BrowserWindow({
-    show: true,
+    show: false,
     webPreferences: {
       nodeIntegrationInWorker: true,
       contextIsolation: false,
