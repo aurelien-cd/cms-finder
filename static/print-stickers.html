@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Printer</title>
+    <style>
+        body {
+            font-family: sans-serif !important;
+        }
+        @page {
+            size: A4;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id='app'>
+        <template v-for="(tiroir, index) in results">
+        <div class="grid grid-cols-4 gap-0 m-0 break-after-page">
+            <div class="flex items-center justify-center font-bold w-[52.5mm] h-[21.2mm] p-3">
+                TIROIR {{ index + 1 }}
+            </div>
+            <div v-for="cms in tiroir.found" class="flex items-center justify-center font-bold w-[52.5mm] h-[21.2mm] p-3 uppercase">
+                <!-- remove .dxf at the end of cms -->
+                {{ cms.substring(0, cms.length - 4) }}
+            </div>
+            <div v-for="cms in tiroir.notFound" class="box-border font-bold w-[52.5mm] h-[21.2mm] p-3">
+                <div class="flex items-center justify-center w-full h-full uppercase border-8 border-red-700">
+                    {{ cms.substring(0, cms.length - 4) }}
+                </div>
+            </div>
+        </div>
+        </template>
+    </div>
+</body>
+<script>
+    const { createApp, ref } = Vue;
+
+    const {
+        ipcRenderer
+    } = require('electron');
+
+    const nbPerPage = 64;
+
+    const app = createApp({
+        data() {
+            return {
+                results: '',
+            }
+        },
+        mounted() {
+            ipcRenderer.on('printStickers', (e, results) => { //Receiving response
+                console.log("results", results)
+                this.results = results;
+                ipcRenderer.invoke('readyToPrintPDF') //Communicate the message to the process of the page where webview is located
+            })
+        },
+        methods: {}
+    }).mount('#app');
+</script>
+</html>
