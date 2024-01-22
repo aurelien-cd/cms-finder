@@ -1,12 +1,16 @@
 <script setup>
 
+const { app }  = window.require('@electron/remote');
+const version = app.getVersion();
+
 </script>
 
 <template>
   <Updater />
   <div class="flex flex-col h-full gap-8 mt-8">
-    <div class="flex justify-center">
+    <div class="flex flex-col items-center justify-center">
       <img src="/logo.svg" class="w-64" />
+      <span class="">Version : {{ version }}</span>
     </div>
     <div class="flex flex-row items-center justify-center gap-8">
       <NuxtLink href="/libraries">
