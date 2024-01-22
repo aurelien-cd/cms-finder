@@ -116,7 +116,7 @@ async function bootstrap() {
   });
 
   autoUpdater.on('download-progress', (progressObj) => {
-    win.webContents.send('download_progress', progressObj);
+    win.webContents.send('download_progress', progressObj.percent);
   });
 
   autoUpdater.on('update-downloaded', () => {

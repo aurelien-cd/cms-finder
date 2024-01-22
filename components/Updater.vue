@@ -19,9 +19,9 @@ ipcRenderer.on('update_downloaded', () => {
   downloadFinished.value = true;
 });
 
-ipcRenderer.on('download_progress', (progressObj) => {
-    console.log(progressObj);
-  downloadProgress.value = progressObj.percent;
+ipcRenderer.on('download_progress', (percent) => {
+  console.log(percent);
+  downloadProgress.value = Math.round(percent);
 });
 
 </script>
