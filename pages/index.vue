@@ -6,7 +6,7 @@
   <Updater />
   <div class="flex flex-col h-full gap-8 mt-8">
     <div class="flex justify-center">
-      <NuxtImg src="/logo.svg" class="w-64" />
+      <img src="/logo.svg" class="w-64" />
     </div>
     <div class="flex flex-row items-center justify-center gap-8">
       <NuxtLink href="/libraries">

@@ -3,6 +3,7 @@ import { ipcRenderer } from 'electron'
 import { CardHeader } from '~/components/ui/card';
 const {dialog} = window.require('@electron/remote');
 import { defineEmits } from 'vue';
+import process from 'node:process';
 
 const emit = defineEmits(['submit']);
 
@@ -12,6 +13,7 @@ const tiroirsCount = ref(1);
 const outputFolder = ref(null);
 const searchTerms = ref([]);
 const tiroirActive = ref('1');
+const isDev = ref(process.env.VITE_DEV_SERVER_URL);
 
 libraries.value = await ipcRenderer.invoke('getStoreValue', 'libraries') || [];
 
@@ -56,8 +58,6 @@ const removeTiroir = () => {
 }
 
 const handleSubmit = () => {
-  console.log(searchTerms.value);
-
   const terms = searchTerms.value.map((t) => {
     return t.split('\n').filter((t) => t.length > 0);
   });
@@ -150,7 +150,7 @@ const handleSubmit = () => {
           <Icon name="tabler:search" class="w-6 h-6 mr-2" />
           Rechercher
         </Button> 
-        <Button @click="setTestData()">
+        <Button v-if="isDev" @click="setTestData()">
           <Icon name="tabler:search" class="w-6 h-6 mr-2" />
           Test
         </Button>

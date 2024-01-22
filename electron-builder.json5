@@ -9,7 +9,13 @@
   },
   "files": [
     ".output/**/*",
-    "dist-electron"
+    "dist-electron",
+  ],
+  "extraResources": [
+    {
+      "from": "static",
+      "to": ""
+    }
   ],
   "mac": {
     "artifactName": "${productName}_${version}.${ext}",

@@ -8,4 +8,4 @@ dist
 
 # electron
 dist-electron/
-release
+release/*

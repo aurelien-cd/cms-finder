@@ -26,8 +26,6 @@ const preload = path.join(process.env.DIST, 'preload.js')
 
 const Store = require('electron-store')
 const { autoUpdater } = require("electron-updater")
-
-
 const store = new Store()
 
 async function bootstrap() {
@@ -73,7 +71,11 @@ async function bootstrap() {
 
   // console.log(`file://${__dirname}/static/print-stickers.html`)
 
-  printerWindow.loadFile(`${__dirname}/../static/print-stickers.html`);
+  const winURL = process.env.VITE_DEV_SERVER_URL
+  ? `${__dirname}/../static/print-stickers.html`
+  : path.join(process.resourcesPath, "print-stickers.html")
+
+  printerWindow.loadFile(winURL);
   printerWindow.webContents.openDevTools();
 
   ipcMain.handle("printStickers", (event, content) => {

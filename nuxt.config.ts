@@ -2,7 +2,7 @@ import { pwa } from './config/pwa'
 import { appDescription } from './constants/index'
 
 export default defineNuxtConfig({
-  // ssr: false,
+  ssr: false,
 
   modules: [
     '@vueuse/nuxt',
@@ -20,14 +20,13 @@ export default defineNuxtConfig({
     // when using generate, payload js assets included in sw precache manifest
     // but missing on offline, disabling extraction it until fixed
     payloadExtraction: false,
-    inlineSSRStyles: false,
     renderJsonPayloads: true,
     typedPages: true,
   },
 
-  // css: [
-  //   '@unocss/reset/tailwind.css',
-  // ],
+  css: [
+    '~/assets/css/tailwind.css',
+  ],
 
   shadcn: {
     /**
@@ -41,8 +40,11 @@ export default defineNuxtConfig({
     componentDir: './components/ui',
   },
 
-  colorMode: {
-    classSuffix: '',
+  runtimeConfig: {
+    app: {
+      baseURL: './',
+      buildAssetsDir: './',
+    },
   },
 
   nitro: {
@@ -56,6 +58,11 @@ export default defineNuxtConfig({
       routes: ['/'],
       ignore: ['/hi'],
     },
+    runtimeConfig: {
+      app: {
+        baseURL: './',
+      }
+    }
   },
 
   app: {
