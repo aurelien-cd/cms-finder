@@ -20,7 +20,7 @@ ipcRenderer.on('update_downloaded', () => {
 });
 
 ipcRenderer.on('download_progress', (progressObj) => {
-  ipcRenderer.removeAllListeners('update_downloaded');
+    console.log(progressObj);
   downloadProgress.value = progressObj.percent;
 });
 
@@ -52,7 +52,7 @@ ipcRenderer.on('download_progress', (progressObj) => {
 
         <div v-else class="flex items-center gap-2">
             <Progress :model-value="downloadProgress" class="flex-grow" />
-            <span>{{ downloadProgress }}%</span>
+            <span>{{ parseInt(downloadProgress) }}%</span>
         </div>
       </DialogContent>
     </Dialog>
